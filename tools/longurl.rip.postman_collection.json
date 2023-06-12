@@ -1,0 +1,54 @@
+{
+	"info": {
+		"_postman_id": "666e8e77-8f08-4e30-89fc-7d7661080d1b",
+		"name": "longurl.rip",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7846735"
+	},
+	"item": [
+		{
+			"name": "Slug Create",
+			"request": {
+				"method": "POST",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/v1/slugs/create",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"v1",
+						"slugs",
+						"create"
+					]
+				}
+			},
+			"response": []
+		},
+		{
+			"name": "Slug Get",
+			"request": {
+				"method": "GET",
+				"header": [],
+				"url": {
+					"raw": "{{API_URL}}/v1/slug/:slug",
+					"host": [
+						"{{API_URL}}"
+					],
+					"path": [
+						"v1",
+						"slug",
+						":slug"
+					],
+					"variable": [
+						{
+							"key": "slug",
+							"value": "test"
+						}
+					]
+				}
+			},
+			"response": []
+		}
+	]
+}

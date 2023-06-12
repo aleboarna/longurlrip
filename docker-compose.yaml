@@ -1,0 +1,68 @@
+version: "3.9"
+
+services:
+  mysql:
+    image: mysql:8.0.33
+    container_name: mysql
+    hostname: mysql
+    command: --default-authentication-plugin=mysql_native_password
+    restart: always
+    ports:
+      - "3306:3306"
+    environment:
+      MYSQL_ROOT_PASSWORD: example
+      MYSQL_DATABASE: url_shortener
+      MYSQL_USER: ale
+      MYSQL_PASSWORD: 123url123
+    volumes:
+      - vol_mysql_data:/var/lib/mysql
+  mongo:
+    image: mongo
+    container_name: mongodb
+    hostname: mongodb
+    restart: always
+    ports:
+      - "27107:27107"
+#    environment:
+#      MONGO_INITDB_ROOT_USERNAME: ale
+#      MONGO_INITDB_ROOT_PASSWORD: example
+    volumes:
+      - vol_mongo_data:/data/db
+  dynamodb:
+    image: amazon/dynamodb-local:1.22.0
+    container_name: dynamodb
+    hostname: dynamodb
+    ports:
+      - "8000:8000"
+  api:
+    build:
+      context: .
+      dockerfile: apps/api/Dockerfile
+      target: dev
+    image: longurlrip-api:latest
+    container_name: longurlrip-api
+    hostname: longurlrip-api
+    ports:
+      - "5000:8001"
+      - "9229:9229"
+    environment:
+      - PORT=8001
+      - MYSQL_HOST=mysql
+      - MYSQL_USER=ale
+      - MYSQL_DATABASE=url_shortener
+      - MYSQL_PASSWORD=123url123
+      - APP_MEMORY_CLASS=dynamodb
+      - AWS_REGION=us-east-1
+      - MONGO_USER=ale
+      - MONGO_PASSWORD=example
+      - MONGO_HOST=mongodb
+      - MONGO_DB=url_shortener
+      - ENV=local
+    volumes:
+      - $PWD:/app
+      - vol_node_modules:/app/node_modules
+
+volumes:
+  vol_node_modules:
+  vol_mysql_data:
+  vol_mongo_data:

@@ -13,9 +13,8 @@
         "outputPath": "dist/apps/api",
         "format": ["cjs"],
         "bundle": false,
-        "main": "apps/api/src/main.ts",
+        "main": "apps/api/src/index.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
-        "assets": ["apps/api/src/assets"],
         "generatePackageJson": true,
         "esbuildOptions": {
           "sourcemap": true,
@@ -41,7 +40,9 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "api:build"
+        "buildTarget": "api:build",
+        "inspect": "inspect",
+        "host": "0.0.0.0"
       },
       "configurations": {
         "development": {
@@ -74,8 +75,7 @@
       }
     },
     "docker-build": {
-      "dependsOn": ["build"],
-      "command": "docker build -f apps/api/Dockerfile . -t api"
+      "command": "docker build -f apps/api/Dockerfile . -t longurlrip-api"
     }
   },
   "tags": []
