@@ -20,7 +20,7 @@ CMD ["nx", "serve", "api"]
 FROM dev as build
 
 # install dependencies
-RUN yarn
+RUN yarn install --ignore-optional
 
 # copy all code in container as we are not relying on docker compose volume mount to load code
 COPY . .
@@ -38,7 +38,7 @@ WORKDIR /app
 COPY package*.json yarn.lock ./
 
 # install only production dependencies
-RUN yarn install --production=true
+RUN yarn install --production=true --ignore-optional
 
 # copy built js files from build stage
 COPY --from=build /app/dist ./dist

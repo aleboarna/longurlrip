@@ -46,6 +46,7 @@ services:
       - "5000:8001"
       - "9229:9229"
     environment:
+      - PROJECT_NAME=LongUrlRip
       - PORT=8001
       - MYSQL_HOST=mysql
       - MYSQL_USER=ale

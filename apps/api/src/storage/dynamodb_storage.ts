@@ -4,7 +4,7 @@ import { DynamoDB, Endpoint, config } from 'aws-sdk';
 
 export class DynamoDbStorage implements IStorage {
   private connection;
-  private tableName = 'SLUGS';
+  private tableName = `${process.env.PROJECT_NAME}-Slugs-${process.env.ENV}`;
   private params = {
     AttributeDefinitions: [
       {
@@ -28,7 +28,7 @@ export class DynamoDbStorage implements IStorage {
     },
   };
   constructor() {
-    config.update({ region: 'us-east-1' });
+    config.update({ region: process.env.AWS_REGION });
     this.connection = new DynamoDB({
       credentials:
         process.env.ENV === 'local'

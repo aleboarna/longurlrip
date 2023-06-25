@@ -4,7 +4,7 @@
   "sourceRoot": "apps/api/src",
   "projectType": "application",
   "targets": {
-    "build": {
+    "build:express": {
       "executor": "@nx/esbuild:esbuild",
       "outputs": ["{options.outputPath}"],
       "defaultConfiguration": "production",
@@ -13,7 +13,40 @@
         "outputPath": "dist/apps/api",
         "format": ["cjs"],
         "bundle": false,
-        "main": "apps/api/src/index.ts",
+        "main": "apps/api/src/express.ts",
+        "tsConfig": "apps/api/tsconfig.app.json",
+        "generatePackageJson": true,
+        "esbuildOptions": {
+          "sourcemap": true,
+          "outExtension": {
+            ".js": ".js"
+          }
+        }
+      },
+      "configurations": {
+        "development": {},
+        "production": {
+          "generateLockfile": true,
+          "esbuildOptions": {
+            "sourcemap": false,
+            "outExtension": {
+              ".js": ".js"
+            }
+          }
+        }
+      }
+    },
+    "build:lambda": {
+      "executor": "@nx/esbuild:esbuild",
+      "outputs": ["{options.outputPath}"],
+      "defaultConfiguration": "production",
+      "options": {
+        "platform": "node",
+        "outputPath": "dist/apps/api",
+        "format": ["cjs"],
+        "bundle": true,
+        "thirdParty": true,
+        "main": "apps/api/src/lambda.ts",
         "tsConfig": "apps/api/tsconfig.app.json",
         "generatePackageJson": true,
         "esbuildOptions": {
@@ -40,16 +73,16 @@
       "executor": "@nx/js:node",
       "defaultConfiguration": "development",
       "options": {
-        "buildTarget": "api:build",
+        "buildTarget": "api:build:express",
         "inspect": "inspect",
         "host": "0.0.0.0"
       },
       "configurations": {
         "development": {
-          "buildTarget": "api:build:development"
+          "buildTarget": "api:build:express:development"
         },
         "production": {
-          "buildTarget": "api:build:production"
+          "buildTarget": "api:build:express:production"
         }
       }
     },
