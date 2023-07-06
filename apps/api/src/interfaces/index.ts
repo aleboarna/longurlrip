@@ -1,9 +1,3 @@
-export type RequestCreate = {
-  readonly url: string;
-  readonly length?: number;
-  readonly customSlug?: string;
-};
-
 export type ErrorResponse = {
   readonly errorCode: number;
   readonly message: string;

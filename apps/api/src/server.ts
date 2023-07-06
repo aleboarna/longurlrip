@@ -2,10 +2,14 @@ import express, { Application, NextFunction, Request, Response } from 'express';
 import cors from 'cors';
 import helmet from 'helmet';
 import Ajv, { JTDSchemaType } from 'ajv/dist/jtd';
-import { RequestCreate } from './interfaces';
 import { PlatformException } from './exceptions/PlatformException';
 import { ErrorTypes } from './exceptions';
 import { UrlService } from './services/url_service';
+import {
+  SlugCreateRequestPayload,
+  SlugCreateResponsePayload,
+  SlugGetResponsePayload,
+} from '@longurlrip/types';
 
 const ajv = new Ajv();
 
@@ -16,7 +20,7 @@ app.use(helmet());
 app.use(cors());
 app.use(express.json());
 
-const schema: JTDSchemaType<RequestCreate> = {
+const schema: JTDSchemaType<SlugCreateRequestPayload> = {
   properties: {
     url: { type: 'string' },
   },
@@ -40,7 +44,8 @@ app.post('/v1/slugs/create', async (req: Request, res: Response) => {
     const { url, length, customSlug } = req.body;
     try {
       const slug = await service.addEntry(url, length, customSlug);
-      res.json({ slug });
+      const response: SlugCreateResponsePayload = { slug: slug! };
+      res.json(response);
     } catch (e) {
       const error = <PlatformException>e;
       res
@@ -64,7 +69,8 @@ app.get(
     const { slug } = req.params;
     const url = await service.getEntry(slug);
     if (url !== undefined) {
-      res.json({ url });
+      const response: SlugGetResponsePayload = { url: url.url };
+      res.json(response);
     } else {
       const error = new PlatformException(
         ErrorTypes.APIErrorCodes.INVALID_REQUEST_PATH

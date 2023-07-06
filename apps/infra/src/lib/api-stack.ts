@@ -42,6 +42,7 @@ export class ApiStack extends cdk.Stack {
         apiName: `${projectName}-API-${stackEnv}`,
         description: `This is the main API for project.`,
         defaultIntegration: lambdaIntegration,
+        corsPreflight: { allowOrigins: [`https://${domainName}`] },
       }
     );
 

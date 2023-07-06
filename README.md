@@ -10,9 +10,11 @@
   * [Linting](#linting)
   * [Testing](#testing)
   * [Building](#building)
+  * [Running](#running)
   * [Deploying](#deploying)
 * [Development](#development)
   * [Debugging](#debugging)
+* [Historical Commands](#historical-commands)
 * [TODO](#todo)
 * [Diagrams](#diagrams)
   * [Architectural Diagram](#architectural-diagram)
@@ -41,9 +43,14 @@ nx build <project>
 
 For `API` we have `build:express` & `build:lambda` to build for deployment on Docker or on serverless Lambda/Cloud Functions etc.
 
+### Running
+```shell
+nx serve <project>
+```
+
 ### Deploying
 ```shell
-nx deploy infra
+stackENV=<en> domainName=<domainName> domainNameCertificate=<cert_id> nx deploy infra
 ```
 
 ## Development
@@ -57,6 +64,34 @@ or by running the included IntelliJ Run Configuration
 To debug an app use included IntelliJ Run Configuration 
 
 API: `[API][Docker] Debug`
+
+## Historical Commands
+1. Create monorepo workspace with API
+```shell
+npx create-nx-workspace@16.5.2 longurlrip
+nx g @nx/react:setup-tailwind --project=web
+```
+2. Create infra project
+```shell
+nx g @nx/node:application --name infra
+nx g @nx/react:setup-tailwind --project=web
+```
+3. Create AWS CDK project for infra project
+```shell
+npx cdk init app --language=typescript 
+```
+4. Create web project
+```shell
+nx g @nx/react:app web
+```
+5. Add tailwind to react web project
+```shell
+nx g @nx/react:setup-tailwind --project=web
+```
+6. Create shared types library for API & web
+```shell
+nx g @nrwl/node:library --name types
+```
 
 ## TODO
 - [x] API

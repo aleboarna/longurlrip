@@ -1,8 +1,6 @@
 import * as cdk from 'aws-cdk-lib';
-import * as lambda from 'aws-cdk-lib/aws-lambda';
 import { Construct } from 'constructs';
-import { Duration, RemovalPolicy } from 'aws-cdk-lib';
-import { lambdaApiPermissions } from '../config/lambda-permissions';
+import { RemovalPolicy } from 'aws-cdk-lib';
 import {
   AttributeType,
   BillingMode,
