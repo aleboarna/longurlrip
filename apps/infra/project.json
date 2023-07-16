@@ -8,7 +8,7 @@
       "executor": "nx:run-commands",
       "options": {
         "cwd": "apps/infra",
-        "command": "cdk deploy --all -c stackEnv=$CDK_STACK_ENV -c domainName=$CDK_DOMAIN_NAME -c domainCertificate=$CDK_DOMAIN_CERTIFICATE"
+        "command": "cdk deploy --all -c stackEnv=$CDK_STACK_ENV -c domainName=$CDK_DOMAIN_NAME -c domainCertificateApi=$CDK_DOMAIN_CERTIFICATE_API -c domainCertificateWeb=$CDK_DOMAIN_CERTIFICATE_WEB"
       }
     },
     "lint": {

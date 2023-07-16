@@ -50,7 +50,11 @@ nx serve <project>
 
 ### Deploying
 ```shell
-stackENV=<en> domainName=<domainName> domainNameCertificate=<cert_id> nx deploy infra
+export CDK_STACK_ENV=<env>
+export CDK_DOMAIN_NAME=<domain>
+export CDK_DOMAIN_CERTIFICATE_API=<cert_id>
+export CDK_DOMAIN_CERTIFICATE_WEB=<cert_id>
+nx deploy infra
 ```
 
 ## Development

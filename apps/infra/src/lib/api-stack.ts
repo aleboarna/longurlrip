@@ -3,15 +3,15 @@ import { Construct } from 'constructs';
 import * as api from '@aws-cdk/aws-apigatewayv2-alpha';
 import { HttpLambdaIntegration } from '@aws-cdk/aws-apigatewayv2-integrations-alpha';
 import * as lambda from 'aws-cdk-lib/aws-lambda';
-import { Arn } from 'aws-cdk-lib';
 import { Certificate } from 'aws-cdk-lib/aws-certificatemanager';
 import { ApiMapping, DomainName } from '@aws-cdk/aws-apigatewayv2-alpha';
 import { ARecord, HostedZone, RecordTarget } from 'aws-cdk-lib/aws-route53';
 import { ApiGatewayv2DomainProperties } from 'aws-cdk-lib/aws-route53-targets';
+
 export interface IApiProps extends cdk.StackProps {
   readonly projectName: string;
   readonly domainName: string;
-  readonly domainCertificate: string;
+  readonly domainCertificateApi: string;
   readonly stackEnv: string;
 }
 
@@ -19,7 +19,7 @@ export class ApiStack extends cdk.Stack {
   constructor(scope: Construct, id: string, props: IApiProps) {
     super(scope, id, props);
 
-    const { projectName, domainName, domainCertificate, stackEnv } = props;
+    const { projectName, domainName, domainCertificateApi, stackEnv } = props;
 
     // import lambda based on arn
     const apiLambda = lambda.Function.fromFunctionArn(
@@ -42,7 +42,6 @@ export class ApiStack extends cdk.Stack {
         apiName: `${projectName}-API-${stackEnv}`,
         description: `This is the main API for project.`,
         defaultIntegration: lambdaIntegration,
-        corsPreflight: { allowOrigins: [`https://${domainName}`] },
       }
     );
 
@@ -50,7 +49,7 @@ export class ApiStack extends cdk.Stack {
     const certificate = Certificate.fromCertificateArn(
       this,
       `${projectName}-APIGW-ACM-${stackEnv}`,
-      `arn:aws:acm:${this.region}:${this.account}:certificate/${domainCertificate}`
+      `arn:aws:acm:${this.region}:${this.account}:certificate/${domainCertificateApi}`
     );
 
     // create HTTP API GW domain
